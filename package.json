@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "e-commerce api with payment integration",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/guardianprime/e-commerce-api/issues"
   },
-  "homepage": "https://github.com/guardianprime/e-commerce-api#readme"
+  "homepage": "https://github.com/guardianprime/e-commerce-api#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0"
+  }
 }
