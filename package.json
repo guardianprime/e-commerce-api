@@ -2,10 +2,14 @@
   "name": "e-commerce-api",
   "version": "1.0.0",
   "description": "e-commerce api with payment integration",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon --watch src --ext ts --exec node --loader @esbuild-kit/esm-loader src/server.ts",
+    "watch": "tsc -w",
+    "test": "jest --config jest.config.js"
   },
   "repository": {
     "type": "git",
@@ -17,10 +21,15 @@
     "url": "https://github.com/guardianprime/e-commerce-api/issues"
   },
   "homepage": "https://github.com/guardianprime/e-commerce-api#readme",
+  "devDependencies": {
+    "@esbuild-kit/esm-loader": "^2.6.5",
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "helmet": "^8.1.0"
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0"
   }
 }
