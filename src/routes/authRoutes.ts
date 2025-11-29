@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { Jwt } from "jsonwebtoken";
 
 const authRoutes = Router();
 

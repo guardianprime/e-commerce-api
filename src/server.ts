@@ -1,16 +1,12 @@
 import express, { Request, Response, NextFunction } from "express";
+import authRoutes from "./routes/authRoutes.js";
 
 // Initialize Express app
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 // Routes
-app.get("/api/users", (req: Request, res: Response) => {
-  res.json({
-    state: "success",
-    message: "this is the users route",
-  });
-});
+app.use("/api/users", authRoutes);
 
 // Start server
 app.listen(PORT, () => {
