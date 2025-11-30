@@ -1,11 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
 import authRoutes from "./routes/authRoutes.js";
+import { connectDB } from "./db.js";
 import * as dotenv from "dotenv";
 dotenv.config();
 
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
+connectDB();
 
 // Routes
 app.use("/api/users", authRoutes);
