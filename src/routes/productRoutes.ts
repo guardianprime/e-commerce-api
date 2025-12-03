@@ -1,9 +1,39 @@
 import { Router } from "express";
+import ProductSchema from "../models/productModel.js";
 
 const productRoutes = Router();
 
-productRoutes.get("/", (req, res) => {
-  res.send("this is the product routes");
+//this is to get all the products in the database
+productRoutes.get("/", async (req, res) => {
+  try {
+    res.json({ status: "success", data: "this is the project!!" });
+    // const data = await ProductSchema;
+  } catch (error) {}
+});
+
+// this is for adding new products
+productRoutes.post("/", async (req, res) => {
+  try {
+    res.status(201).json({
+      status: "success",
+      message: "product successfully added",
+    });
+  } catch (error) {}
+});
+
+//this is for updating products
+productRoutes.put("/:id", async (req, res) => {
+  try {
+    res.status(200).json({
+      status: "success",
+      message: "product successfully updated",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "failed",
+      message: error,
+    });
+  }
 });
 
 export default productRoutes;
