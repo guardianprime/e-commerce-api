@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductSchema from "../models/productModel.js";
+import Product from "../models/productModel.js";
 
 const productRoutes = Router();
 
@@ -14,11 +14,20 @@ productRoutes.get("/", async (req, res) => {
 // this is for adding new products
 productRoutes.post("/", async (req, res) => {
   try {
+    const newProduct = new Product(req.body);
+
+    await newProduct.save();
+
     res.status(201).json({
       status: "success",
-      message: "product successfully added",
+      data: newProduct,
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
+      message: error.message,
+    });
+  }
 });
 
 //this is for updating products
