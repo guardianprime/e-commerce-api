@@ -48,17 +48,57 @@ productRoutes.post("/", async (req: Request, res: Response) => {
 });
 
 //this is for updating products
-productRoutes.put("/:id", async (req: Request, res: Response) => {
+productRoutes.patch("/:id", async (req: Request, res: Response) => {
   try {
-    await Product.findByIdAndUpdate(req.query.id);
+    const productId = req.params.id;
+
+    // only things allowed to be changed by admin
+    const allowedUpdates = [
+      "name",
+      "price",
+      "description",
+      "stock",
+      "category",
+    ];
+    const updates: Record<string, any> = {};
+
+    for (const key of allowedUpdates) {
+      if (req.body[key] !== undefined) {
+        updates[key] = req.body[key];
+      }
+    }
+
+    // this will prevent empty update requests
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({
+        status: "failed",
+        message: "No valid fields provided for update",
+      });
+    }
+
+    // Update product and return the NEW version
+    const updatedProduct = await Product.findByIdAndUpdate(productId, updates, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedProduct) {
+      return res.status(404).json({
+        status: "failed",
+        message: "Product not found",
+      });
+    }
+
     res.status(200).json({
       status: "success",
-      message: "product successfully updated",
+      message: "Product successfully updated",
+      data: updatedProduct,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       status: "failed",
-      message: error,
+      message: "Server error while updating product",
+      error: error.message,
     });
   }
 });
