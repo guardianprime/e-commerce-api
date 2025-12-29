@@ -1,9 +1,7 @@
 import express from "express";
-import authRoutes from "./routes/authRoutes.js";
 import { connectDB } from "./db.js";
 import * as dotenv from "dotenv";
-import productRoutes from "./routes/productRoutes.js";
-import auth from "./middlewares/authMiddleware.js";
+import router from "./routes/index.routes.js";
 dotenv.config();
 
 // Initialize Express app
@@ -15,8 +13,7 @@ connectDB();
 app.use(express.json());
 
 // Routes
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/products", auth, productRoutes);
+app.use("/api/v1/", router);
 
 // Start server
 app.listen(PORT, () => {

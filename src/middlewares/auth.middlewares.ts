@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-function auth(req: Request, res: Response, next: NextFunction) {
+function authMiddleware(req: Request, res: Response, next: NextFunction) {
   if (!process.env.JWT_SECRET) throw new Error("JWT_SECRET not set");
   const authHeader = req.headers.authorization || "";
   console.log(req.headers);
@@ -46,4 +46,4 @@ function auth(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export default auth;
+export default authMiddleware;

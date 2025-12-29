@@ -1,17 +1,9 @@
-import { Router } from "express";
 import jwt from "jsonwebtoken";
-import { User } from "../models/userModel.js";
+import { User } from "../models/user.models.js";
 import bcrypt from "bcryptjs";
-import dotenv from "dotenv";
-dotenv.config();
+import { Request, Response, NextFunction } from "express";
 
-const authRoutes = Router();
-
-authRoutes.get("/", (req, res) => {
-  res.send("this is the auth routes");
-});
-
-authRoutes.post("/signup", async (req, res) => {
+export const signupController = async (req: Request, res: Response) => {
   try {
     const { username, password, email } = req.body;
     const existingUser = await User.findOne({ email });
@@ -31,9 +23,9 @@ authRoutes.post("/signup", async (req, res) => {
   } catch (err) {
     res.status(500).json({ status: "failed", message: "Server error" });
   }
-});
+};
 
-authRoutes.post("/login", async (req, res) => {
+export const loginController = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
@@ -54,6 +46,4 @@ authRoutes.post("/login", async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
-});
-
-export default authRoutes;
+};
