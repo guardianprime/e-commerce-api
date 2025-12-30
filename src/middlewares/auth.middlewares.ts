@@ -17,7 +17,6 @@ declare global {
 function authMiddleware(req: Request, res: Response, next: NextFunction) {
   if (!process.env.JWT_SECRET) throw new Error("JWT_SECRET not set");
   const authHeader = req.headers.authorization || "";
-  console.log(req.headers);
   const [scheme, token] = authHeader.split(" ");
 
   if (scheme !== "Bearer" || !token) {
@@ -29,15 +28,12 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as jwt.JwtPayload;
     req.user = { id: decoded.id, email: decoded.email };
-    console.log("authentication successful");
     next();
   } catch (err: unknown) {
-    /* Token expired */
     if (err instanceof jwt.TokenExpiredError) {
       return res.status(401).json({ message: "Token expired" });
     }
 
-    /* Bad signature / invalid token */
     if (err instanceof jwt.JsonWebTokenError) {
       return res.status(401).json({ message: "Invalid token" });
     }

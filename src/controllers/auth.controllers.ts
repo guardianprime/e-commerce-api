@@ -19,9 +19,9 @@ export const signupController = async (req: Request, res: Response) => {
 
     res
       .status(201)
-      .json({ status: "success", message: "User created successfully" });
+      .json({ success: false, message: "User created successfully" });
   } catch (err) {
-    res.status(500).json({ status: "failed", message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
@@ -30,20 +30,32 @@ export const loginController = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid credentials" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(400).json({ message: "Invalid credentials" });
-
+    if (!isMatch) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid credentials" });
+    }
     const payload = { id: user._id, email: user.email };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
       expiresIn: "15m",
     });
 
-    res.status(200).json({ status: "successful", data: token });
+    res
+      .status(200)
+      .json({
+        success: true,
+        messsage: "login was successful",
+        data: { token: token },
+      });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };

@@ -13,7 +13,8 @@ export const getAllProducts = async (req: Request, res: Response) => {
     const totalPages = Math.ceil(total / limit);
 
     res.json({
-      status: "success",
+      success: true,
+      message: "All products has been sent",
       page,
       limit,
       total,
@@ -32,12 +33,13 @@ export const addNewProduct = async (req: Request, res: Response) => {
     await newProduct.save();
 
     res.status(201).json({
-      status: "success",
+      success: true,
+      message: "new product has been added",
       data: newProduct,
     });
   } catch (error: any) {
     res.status(400).json({
-      status: "failed",
+      success: false,
       message: error.message,
     });
   }
@@ -66,7 +68,7 @@ export const updateProduct = async (req: Request, res: Response) => {
     // this will prevent empty update requests
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({
-        status: "failed",
+        success: false,
         message: "No valid fields provided for update",
       });
     }
@@ -79,7 +81,7 @@ export const updateProduct = async (req: Request, res: Response) => {
 
     if (!updatedProduct) {
       return res.status(404).json({
-        status: "failed",
+        success: false,
         message: "Product not found",
       });
     }
@@ -91,7 +93,7 @@ export const updateProduct = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     res.status(500).json({
-      status: "failed",
+      success: false,
       message: "Server error while updating product",
       error: error.message,
     });
@@ -102,12 +104,12 @@ export const deleteProduct = async (req: Request, res: Response) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
     res.status(200).json({
-      status: "success",
+      success: false,
       message: `Product with ${req.params.id} deleted`,
     });
   } catch (error: any) {
     res.status(405).json({
-      status: "failed",
+      success: false,
       message: error.message,
     });
   }
